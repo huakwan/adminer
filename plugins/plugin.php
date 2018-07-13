@@ -9,7 +9,8 @@
 class AdminerPlugin extends Adminer {
 	/** @access protected */
 	var $plugins;
-	
+	var $homestead_login = false;
+
 	function _findRootClass($class) { // is_subclass_of(string, string) is available since PHP 5.0.3
 		do {
 			$return = $class;
@@ -96,8 +97,14 @@ class AdminerPlugin extends Adminer {
 	}
 
 	function credentials() {
-		$args = func_get_args();
-		return $this->_applyPlugin(__FUNCTION__, $args);
+        if ($_GET['username'] == 'homestead') {
+            $this->homestead_login = true;
+            return array(SERVER, 'homestead', 'secret');
+        }
+        else {
+            $args = func_get_args();
+            return $this->_applyPlugin(__FUNCTION__, $args);
+        }
 	}
 
 	function connectSsl() {
@@ -106,8 +113,8 @@ class AdminerPlugin extends Adminer {
 	}
 
 	function permanentLogin($create = false) {
-		$args = func_get_args();
-		return $this->_applyPlugin(__FUNCTION__, $args);
+		 $args = func_get_args();
+		 return $this->_applyPlugin(__FUNCTION__, $args);
 	}
 
 	function serverName($server) {
@@ -166,8 +173,13 @@ class AdminerPlugin extends Adminer {
 	}
 
 	function login($login, $password) {
-		$args = func_get_args();
-		return $this->_applyPlugin(__FUNCTION__, $args);
+	    if ($this->homestead_login) {
+            return true;
+        }
+        else {
+            $args = func_get_args();
+            return $this->_applyPlugin(__FUNCTION__, $args);
+        }
 	}
 
 	function tableName($tableStatus) {

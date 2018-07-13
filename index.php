@@ -11,13 +11,15 @@ function adminer_object()
     }
 
     $plugins = [
+        new AdminerDatabaseHide(['mysql','information_schema','performance_schema','sys']),
+        new AdminerDisplayForeignKeyName(),
         new AdminerTheme(),
     ];
 
     return new AdminerPlugin($plugins);
 }
 
-// include original Adminer or Adminer Editor
+// include original Adminer
 include "./adminer.php";
 
 ?>
