@@ -82,9 +82,11 @@ class AdminerDisplayForeignKeyName
                             $row    = $result -> fetch_assoc();
                             $value  = $row[$fieldName];
                             $length = ( isset( $_GET['text_length'] ) )? (int) $_GET['text_length']/2 : 50;
-                            
-                            if( mb_strlen($value, 'utf-8') > $length ) {
-                                $value = mb_substr( $value, 0, $length, 'utf-8' ).'...';
+
+                            if (extension_loaded('mbstring')) {
+                                if (mb_strlen($value, 'utf-8') > $length) {
+                                    $value = mb_substr($value, 0, $length, 'utf-8') . '...';
+                                }
                             }
                             
                             $return = sprintf('<strong>%s</strong>%s', $original, $value == null ? '' : '   => '.$value.'');
