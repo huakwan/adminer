@@ -57,7 +57,7 @@ class AdminerDisplayForeignKeyName
                 // Find the first char/varchar field to display
                 $fieldName = false;
                 foreach (fields($params['select']) as $field) {
-                    if (true == in_array($field['type'], array('varchar')) && $field['length'] > 25) {
+                    if (true == in_array($field['type'], array('varchar', 'char')) && $field['length'] >= 25) {
                         $fieldName = $field['field'];
                         break;
                     }
